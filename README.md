@@ -1,5 +1,11 @@
 # ObjectField
 
+[![Gem Version](https://badge.fury.io/rb/object_field.svg)](http://badge.fury.io/rb/object_field)
+[![Build Status](https://travis-ci.org/i2bskn/object_field.svg)](https://travis-ci.org/i2bskn/object_field)
+[![Coverage Status](https://coveralls.io/repos/i2bskn/object_field/badge.png)](https://coveralls.io/r/i2bskn/object_field)
+[![Code Climate](https://codeclimate.com/github/i2bskn/object_field/badges/gpa.svg)](https://codeclimate.com/github/i2bskn/object_field)
+[![Dependency Status](https://gemnasium.com/i2bskn/object_field.svg)](https://gemnasium.com/i2bskn/object_field)
+
 Support for object persistence.
 
 ## Installation
