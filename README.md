@@ -6,7 +6,8 @@
 [![Code Climate](https://codeclimate.com/github/i2bskn/object_field/badges/gpa.svg)](https://codeclimate.com/github/i2bskn/object_field)
 [![Dependency Status](https://gemnasium.com/i2bskn/object_field.svg)](https://gemnasium.com/i2bskn/object_field)
 
-Support for object persistence.
+Support for object persistence.  
+Save the object to data store via instance method.
 
 ## Installation
 
@@ -26,21 +27,57 @@ Or install it yourself as:
 
 ## Usage
 
-```ruby
-require "object_field"
+Include `ObjectField::Jsonizer` or `ObjectField::Serializer`.
 
-class Example
+#### Jsonizer
+
+`.#jsonize` defines accessor of JSON field.  
+
+```ruby
+class InJsonValue
   include ObjectField::Jsonizer
-  attr_accessor :field1_json, :field2_json, :field3_json
-  jsonize :field1_json, :field2_json
+  attr_accessor :field1_json, :field2, :field3_json
+  jsonize :field1_json, :field2
   jsonize :field3_json, as: :attributes
 end
+```
 
-e = Example.new
-e.field1 = [1, 2, 3]
-e.attributes = {key: :value}
-p e # => #<Example:0x007fa5914ac548 @field1_json="[1,2,3]", @field3_json="{\":key\":\":value\"}">
-puts e.attributes[:key] # => value
+Setter is save the value to JSON.  
+Getter returns parsed value.  
+Name of accessor can be specified with `as` option.  
+It is set `field1`, `field2_as_json` if not specified.
+
+```ruby
+object = InJsonValue.new
+object.field1 = [1, 2, 3]
+p object.field1_json # => "[1,2,3]"
+object.field1.each {|i| p i}
+```
+
+#### Serializer
+
+`.#serialize` defines accessor of marshal data field.  
+Like marshal option of [redis-object](https://github.com/nateware/redis-objects).
+
+```ruby
+class InSerializedValue
+  include ObjectField::Serializer
+  attr_accessor :field
+  serialize :field
+end
+```
+
+Setter is save the serialized value.  
+Can not be saved, Proc object and anonymous class. (To raise TypeError)  
+Getter returns deserialized value.  
+Name of accessor can be specified with `as` option.  
+It is set `field_data` if not specified.
+
+```
+class SerializedObject; end
+object = InSerializedValue.new
+object.field_data = SerializedObject.new
+p object.field_data.class # => SerializedObject
 ```
 
 ## Contributing
