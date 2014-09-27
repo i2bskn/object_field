@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe ObjectField::Jsonizer do
-  class Example
+  class InJsonValue
     include ObjectField::Jsonizer
     attr_accessor :field1_json, :field2, :field3_json
     jsonize :field1_json, :field2
@@ -10,16 +10,16 @@ describe ObjectField::Jsonizer do
 
   describe ".#included" do
     it "should define singleton method" do
-      expect(Example.respond_to? :jsonize).to be_truthy
+      expect(InJsonValue.respond_to? :jsonize).to be_truthy
     end
   end
 
   it "not possible to specify more than one accessor" do
-    expect{Example.jsonize(:field1, :field2, as: :field_name)}.to raise_error(ArgumentError)
+    expect{InJsonValue.jsonize(:field1, :field2, as: :field_name)}.to raise_error(ArgumentError)
   end
 
   describe "included class" do
-    let(:example) { Example.new }
+    let(:example) { InJsonValue.new }
     let(:hash) { {key: :value} }
     let(:stored_instance) do
       example.attributes = hash
