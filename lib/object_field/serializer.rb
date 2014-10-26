@@ -2,9 +2,15 @@ module ObjectField
   module Serializer
     module ClassMethods
       def serialize(field_name, as: nil, compression: Zlib::DEFAULT_COMPRESSION)
-        accessor = as || accessor_name(field_name)
+        define_serializer field_name, (as || accessor_name(field_name)), compression
+      end
+
+      private
+      def define_serializer(field_name, accessor, compression)
         define_method accessor do |klass=nil|
-          object = Marshal.load(Zlib.inflate(self.send(field_name)))
+          value = self.send(field_name)
+          return nil if value.nil?
+          object = Marshal.load(Zlib.inflate(value))
           klass ? klass.new(object) : object
         end
 
@@ -13,9 +19,12 @@ module ObjectField
         end
       end
 
-      private
       def accessor_name(field_name)
-        [field_name, :_data].join.to_sym
+        if /(.*)_data/ =~ field_name
+          $1.to_sym
+        else
+          [field_name, :_as_data].join.to_sym
+        end
       end
     end
 

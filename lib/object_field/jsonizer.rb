@@ -12,7 +12,9 @@ module ObjectField
       private
       def define_jsonizer(field_name, accessor)
         define_method accessor do |klass=nil|
-          object = Oj.load(self.send(field_name))
+          value = self.send(field_name)
+          return nil if value.nil?
+          object = Oj.load(value)
           klass ? klass.new(object) : object
         end
 

@@ -62,8 +62,8 @@ Like marshal option of [redis-object](https://github.com/nateware/redis-objects)
 ```ruby
 class InSerializedValue
   include ObjectField::Serializer
-  attr_accessor :field
-  serialize :field
+  attr_accessor :field_data
+  serialize :field_data
 end
 ```
 
@@ -71,13 +71,13 @@ Setter is save the serialized value.
 Can not be saved, Proc object and anonymous class. (To raise TypeError)  
 Getter returns deserialized value.  
 Name of accessor can be specified with `as` option.  
-It is set `field_data` if not specified.
+It is set `field` if not specified.
 
 ```
 class SerializedObject; end
 object = InSerializedValue.new
-object.field_data = SerializedObject.new
-p object.field_data.class # => SerializedObject
+object.field = SerializedObject.new
+p object.field.class # => SerializedObject
 ```
 
 ## Contributing

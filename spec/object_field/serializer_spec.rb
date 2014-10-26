@@ -3,9 +3,9 @@ require "spec_helper"
 describe ObjectField::Serializer do
   class InSerializedValue
     include ObjectField::Serializer
-    attr_accessor :field1, :field2
-    serialize :field1
-    serialize :field2, as: :attributes
+    attr_accessor :field1_data, :field2_data
+    serialize :field1_data
+    serialize :field2_data, as: :attributes
   end
 
   class SerializeObject; end
@@ -25,12 +25,12 @@ describe ObjectField::Serializer do
     end
 
     it "should define accessor" do
-      expect(example.respond_to? :field1_data).to be_truthy
+      expect(example.respond_to? :field1).to be_truthy
       expect(example.respond_to? :attributes).to be_truthy
     end
 
     it "should save Object" do
-      expect(stored_instance.field2).not_to eq(object)
+      expect(stored_instance.field2_data).not_to eq(object)
     end
 
     it "should parse Object" do
